@@ -1,0 +1,48 @@
+;; revision history
+
+;;  January 2 2014
+
+;;  Updated to work in Version 5.0.5 of Netlogo.  
+
+;;  January 10 2007
+
+;;  Completely changed the trading mechanism to reflect the simple
+;;  order book approach actually described in Gode & Sunder (1993)
+;;  on pages 121-122.
+
+;;  Added a constrained switch to implement either ZI-C or ZI-U
+;;  agents in the model.
+
+;;  Dropped the Price display window, which was displaying the last
+;;  transaction price.  The average price window conveys the 
+;;  appropriate information.
+
+;;  Setup the default parameters for maxBuyerValue and maxSellerCost
+;;  to be consistent with G&S article.  Number of buyers and sellers
+;;  is still considerably higher than the original article.
+
+;;  September 26 2006
+
+;;  Fixed a bug when the number of buyers and sellers were unequal.  
+;;  The program would abort with an error in the foreach block that
+;;  calculated max possible surplus.
+
+;;  August 18 2006
+
+;;  Adjusted the way the ZI-C bid and ask prices were being randomly set
+;;  Gode and Sunder state in their article that the bid and
+;;  ask prices are randomly set (uniform distribution) between
+;;  1 and 200 which was the range of possible trading prices.
+;;  This would be true for ZI-U traders.  This version now
+;;  sets the ask price between the sellers cost and the 
+;;  maxBuyerValue (incorrectly setting it to maxSellerCost
+;;  before), i.e., a ZI-C seller that can't lose money based
+;;  on its ask-price.  The buyer sets it random bid between 
+;;  the buyer value and the minimum seller cost 1 (incorrectly
+;;  set to zero before), i.e., a ZI-C buyer.
+
+;;  August 17 2006
+
+;;  Changed the world view show that turtles do not show.
+;;  This was done to reduce confusion about whether something
+;;  should be happening in the world view.
