@@ -328,6 +328,11 @@ to draw-histogram-prices
    
 ;; revision history
 ;;
+;;  January 18 2014
+;;
+;;  Updated Time monitor on main window to correctly display the
+;;  number of ticks.
+;;
 ;;  January 2 2014
 ;;  
 ;;  Updated to work in Version 5.0.5 of Netlogo.  
@@ -587,7 +592,7 @@ MONITOR
 757
 149
 Time
-tickcount
+ticks
 0
 1
 11
