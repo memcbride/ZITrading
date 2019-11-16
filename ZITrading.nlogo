@@ -1,4 +1,4 @@
-;; Implements Zero-intelligence trading based on the article 
+;; Implements Zero-intelligence trading based on the article
 ;; by Gode and Sunder.  The code implements the simple order
 ;; book trading described in Gode & Sunder (1993), pp. 121-122.
 
@@ -46,7 +46,7 @@ to setup
   ;; clear out all previous variables
   clear-all
   ;; populate the patches with the number of each agents randomly
-    ask n-of numberOfBuyers patches [ 
+    ask n-of numberOfBuyers patches [
       sprout-buyers 1 [init-buyer]
       ]
     ask n-of numberOfSellers patches [
@@ -87,7 +87,7 @@ to restore-defaults
 ;; main loop
 to go
   ;; end the simulation??
-  if ticks = maxNumberOfTrades [ 
+  if ticks = maxNumberOfTrades [
     draw-histogram-prices
     stop ]
   ;; execute a trade
@@ -95,7 +95,7 @@ to go
   ;; update the clock
     tick
   end
-  
+
 ;; initialize buyer
 to init-buyer
     set color black   ;; set so does not show in world view
@@ -104,7 +104,7 @@ to init-buyer
     ;; print out the buyer information
     ;; show value
   end
-  
+
 ;; initialize seller
 to init-seller
     set color black  ;; set so does not show in world view
@@ -123,7 +123,7 @@ to init-orderBook
     set bestAskID nobody
     set ask? false
   end
-    
+
 ;; buyer form bid-price
 ;; ZI-C buyer, thus bid-price is between zero and buyer-value
 to-report formBidPrice
@@ -133,7 +133,7 @@ to-report formBidPrice
     ;; ZI-U:  buyers will bid up to the maxBuyerValue even if above their buyer value
     [ report (random-float 1) * (maxBuyerValue - 1) ]
   end
-  
+
 ;; seller form ask-price
 ;; ZI-C seller, thus ask-price is between seller cost and max
 ;; possible price given market, i.e., maxBuyerValue
@@ -155,7 +155,7 @@ to doTrade
   let askPrice 0
   let transPrice 0
   let tradeID 0
-  
+
     ;; init transPrice
     set transPrice 0.0
     ;; randomly select a buyer or seller who has not traded
@@ -205,7 +205,7 @@ to doTrade
         [ ;; get ask price
           set askPrice [formAskPrice] of tradeID
           ;; show "sets askPrice = " + askPrice
-          if (askPrice < cost) and (constrained) 
+          if (askPrice < cost) and (constrained)
             [ show "Seller ask below cost with ZI-C"
             ]
           ;; type tradeID type " asks " type askPrice type " with cost " type cost type "\n"
@@ -239,7 +239,7 @@ to doTrade
                 ;; type "Best ask reset to " type bestAsk type "\n"
               ]
             ]
-        ]  
+        ]
     ]
     ;; if trade occurred, update displays and globals
     if transPrice > 0.0
@@ -256,12 +256,12 @@ to calc-max-surplus
     let bids 0
   let asks 0
   let surpluses 0
-  
+
     set surpluses 0.0
   ;; grab the sorted bids
-    set bids sort-by [ ?1 > ?2 ] [value] of buyers
+    set bids sort-by [ [?1 ?2] -> ?1 > ?2 ] [value] of buyers
   ;; grab the asks
-    set asks sort-by [ ?1 < ?2 ] [cost] of sellers
+    set asks sort-by [ [?1 ?2] -> ?1 < ?2 ] [cost] of sellers
   ;; we now have a list of bids sorted from highest to lowest
   ;; and a list of asks sorted from lowest to highest
   ;; now shorten either bids or asks based on which has fewest
@@ -276,7 +276,7 @@ to calc-max-surplus
   ;;  (foreach asks [show "ask="+ ?1])
     set predictedq 0
     set predictedp 200
-    (foreach bids asks [
+    (foreach bids asks [ [?1 ?2] ->
       if ( ?1 - ?2 > 0.0) [
       set predictedq predictedq + 1
       set predictedp (?1 + ?2) / 2
@@ -288,7 +288,7 @@ to calc-max-surplus
      set maxSurplus surpluses
 ;     show "maxSurplus - " + maxSurplus
   end
-    
+
 ;; draws the demand-supply curves for the values
 to create-Demand-Supply
   ;; set plot to plot to
@@ -296,13 +296,13 @@ to create-Demand-Supply
   ;; set pen to draw demand curve
     set-current-plot-pen "demand-pen"
   ;; draw the demand curve
-    foreach sort-by [ [value] of ?1 > [value] of ?2 ] buyers
-      [ plot [value] of ? ]
+    foreach sort-by [ [?1 ?2] -> [value] of ?1 > [value] of ?2 ] buyers
+      [ ?1 -> plot [value] of ?1 ]
   ;; set pen to draw supply curve
     set-current-plot-pen "supply-pen"
   ;; draw the supply curve
-    foreach sort-by [ [cost] of ?1 < [cost] of ?2 ] sellers
-      [ plot [cost] of ? ]
+    foreach sort-by [ [?1 ?2] -> [cost] of ?1 < [cost] of ?2 ] sellers
+      [ ?1 -> plot [cost] of ?1 ]
   end
 
 ;; draws the transactions on the demand-supply curves
@@ -314,7 +314,7 @@ to draw-transaction
   ;; draw the current transaction price
     plot transactionPrice
   end
-  
+
 ;; draws the histogram of the transaction prices
 to draw-histogram-prices
   ;; set plot to plot to
@@ -325,8 +325,12 @@ to draw-histogram-prices
 
 ;; Copyright and License
 ;; See the Info tab.
-   
+
 ;; revision history
+;;
+;;  November 16, 2019
+;;
+;;  Updated NetLogo 6.1.1.
 ;;
 ;;  January 18 2014
 ;;
@@ -334,8 +338,8 @@ to draw-histogram-prices
 ;;  number of ticks.
 ;;
 ;;  January 2 2014
-;;  
-;;  Updated to work in Version 5.0.5 of Netlogo.  
+;;
+;;  Updated to work in Version 5.0.5 of Netlogo.
 ;;
 ;;  January 10 2007
 ;;
@@ -347,7 +351,7 @@ to draw-histogram-prices
 ;;  agents in the model.
 ;;
 ;;  Dropped the Price display window, which was displaying the last
-;;  transaction price.  The average price window conveys the 
+;;  transaction price.  The average price window conveys the
 ;;  appropriate information.
 ;;
 ;;  Setup the default parameters for maxBuyerValue and maxSellerCost
@@ -356,26 +360,26 @@ to draw-histogram-prices
 ;;
 ;;  September 26 2006
 ;;
-;;  Fixed a bug when the number of buyers and sellers were unequal.  
+;;  Fixed a bug when the number of buyers and sellers were unequal.
 ;;  The program would abort with an error in the foreach block that
 ;;  calculated max possible surplus.
 ;;
 ;;  August 18 2006
-;; 
+;;
 ;;  Adjusted the way the ZI-C bid and ask prices were being randomly set
 ;;  Gode and Sunder state in their article that the bid and
 ;;  ask prices are randomly set (uniform distribution) between
 ;;  1 and 200 which was the range of possible trading prices.
 ;;  This would be true for ZI-U traders.  This version now
-;;  sets the ask price between the sellers cost and the 
+;;  sets the ask price between the sellers cost and the
 ;;  maxBuyerValue (incorrectly setting it to maxSellerCost
 ;;  before), i.e., a ZI-C seller that can't lose money based
-;;  on its ask-price.  The buyer sets it random bid between 
+;;  on its ask-price.  The buyer sets it random bid between
 ;;  the buyer value and the minimum seller cost 1 (incorrectly
 ;;  set to zero before), i.e., a ZI-C buyer.
 ;;
 ;;  August 17 2006
-;;  
+;;
 ;;  Changed the world view show that turtles do not show.
 ;;  This was done to reduce confusion about whether something
 ;;  should be happening in the world view.
@@ -383,8 +387,8 @@ to draw-histogram-prices
 GRAPHICS-WINDOW
 349
 10
-767
-89
+765
+67
 -1
 -1
 8.0
@@ -416,7 +420,7 @@ numberOfBuyers
 numberOfBuyers
 10
 200
-40
+50.0
 10
 1
 NIL
@@ -431,7 +435,7 @@ numberOfSellers
 numberOfSellers
 10
 200
-50
+50.0
 10
 1
 NIL
@@ -446,7 +450,7 @@ maxBuyerValue
 maxBuyerValue
 1
 200
-199
+200.0
 1
 1
 NIL
@@ -461,7 +465,7 @@ maxSellerCost
 maxSellerCost
 1
 200
-200
+200.0
 1
 1
 NIL
@@ -476,7 +480,7 @@ maxNumberOfTrades
 maxNumberOfTrades
 200
 10000
-2000
+2000.0
 200
 1
 NIL
@@ -669,7 +673,7 @@ TEXTBOX
 190
 339
 246
-Step 3:  Go\nStep 4:  To pause press Go again\nStep 5:  To run simulation again, got to step 1
+Step 3:  Go\nStep 4:  To pause press Go again\nStep 5:  To run simulation again, goto to step 1
 11
 0.0
 0
@@ -837,7 +841,7 @@ Dhanaanjay K. Gode and Shyam Sunder. 1993.  Allocative Efficiency of Markets wit
 
 ## COPYRIGHT AND LICENSE
 
-Copyright 2006-2014 
+Copyright 2006-2019 
 
 Mark E McBride
 Department of Economics  
@@ -846,7 +850,7 @@ Oxford, OH 45056
 mark.mcbride@miamioh.edu  
 http://memcbride.net/
 
-Last updated:  January 2, 2014
+Last updated:  November 16, 2019
 
 ![CC BY-NC-SA 3.0](http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png)
 
@@ -1146,9 +1150,8 @@ false
 0
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
-
 @#$#@#$#@
-NetLogo 5.0.5
+NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -1164,7 +1167,6 @@ true
 0
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
-
 @#$#@#$#@
 0
 @#$#@#$#@
