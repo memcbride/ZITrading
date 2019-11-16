@@ -117,7 +117,7 @@ Dhanaanjay K. Gode and Shyam Sunder. 1993.  Allocative Efficiency of Markets wit
 
 ## COPYRIGHT AND LICENSE
 
-Copyright 2006-2014 
+Copyright 2006-2019 
 
 Mark E McBride
 Department of Economics  
@@ -126,7 +126,7 @@ Oxford, OH 45056
 mark.mcbride@miamioh.edu  
 http://memcbride.net/
 
-Last updated:  January 2, 2014
+Last updated:  November 16, 2019
 
 ![CC BY-NC-SA 3.0](http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png)
 
